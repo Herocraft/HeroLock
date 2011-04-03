@@ -5,23 +5,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.avaje.ebean.validation.NotEmpty;
-import com.avaje.ebean.validation.NotNull;
 
-@Entity
+@Entity()
 @Table(name="chests")
 public class HeroChest {
     @Id
     public int id;
     
-    @NotNull
+    @NotEmpty
     public String playerName;
     
-    @NotNull
-    public Location location;
+    @NotEmpty
+    public String location;
     
     @NotEmpty
     private String worldName;
@@ -61,11 +59,11 @@ public class HeroChest {
         this.worldName = worldName;
     }
     
-    public Location getLocation(){
+    public String getLocation(){
         return location;
     }
     
-    public void setLocation(Location location){
+    public void setLocation(String location){
         this.location = location;
     }
     

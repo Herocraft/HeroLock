@@ -23,27 +23,37 @@ public class HLPlayerListener extends PlayerListener {
         Block block = event.getClickedBlock();
         if (block.getState() instanceof ContainerBlock) {
             if(plugin.getLockCommands().containsKey(event.getPlayer().getName())){
-                HeroChest chestCheck = plugin.getDatabase().find(HeroChest.class).where().eq("location", block.getLocation()).findUnique();
+                HeroChest chestCheck = plugin.getDatabase().find(HeroChest.class).where().ieq("location", block.getLocation().toString()).findUnique();
                 if(chestCheck == null){
                     HeroChest newLock = new HeroChest();
-                    newLock.setLocation(block.getLocation());
+                    newLock.setLocation(block.getLocation().toString());
                     newLock.setPassword(plugin.getLockCommands().get(event.getPlayer().getName()));
                     newLock.setPlayer(event.getPlayer());
+                    newLock.setWorldName(event.getPlayer().getWorld().toString());
                     plugin.getDatabase().save(newLock);
                     event.getPlayer().sendMessage(ChatColor.RED + "Locked chest - With password: " + ChatColor.BLUE + plugin.getLockCommands().get(event.getPlayer().getName()));
                     plugin.getLockCommands().remove(event.getPlayer().getName());
                 }else{
                     event.getPlayer().sendMessage("Sorry, that chest is already locked");
                 }
-            }else if(plugin.getUnlockCommands().containsKey(event.getPlayer().getName())){
-                HeroChest chestCheck = plugin.getDatabase().find(HeroChest.class).where().eq("location", block.getLocation()).ieq("password", plugin.getUnlockCommands().get(event.getPlayer().getName())).findUnique();
+            }else{
+                HeroChest chestCheck = plugin.getDatabase().find(HeroChest.class).where().ieq("location", block.getLocation().toString()).findUnique();
                 if(chestCheck == null){
-                    event.getPlayer().sendMessage("Sorry, that password is incorrect for that chest");
-                    event.setCancelled(true);
-                    event.setUseInteractedBlock(Result.DENY);
                     return;
                 }else{
-                    return;
+                    if(plugin.getUnlockCommands().containsKey(event.getPlayer().getName())){
+                        if(plugin.getUnlockCommands().get(event.getPlayer().getName()).equalsIgnoreCase(chestCheck.getPassword())){
+
+                        }else{
+                            event.getPlayer().sendMessage("Wrong password!");
+                            event.setCancelled(true);
+                            event.setUseInteractedBlock(Result.DENY);   
+                        }
+                    }else{
+                        event.getPlayer().sendMessage("Sorry, that chest is locked!");
+                        event.setCancelled(true);
+                        event.setUseInteractedBlock(Result.DENY);
+                    }
                 }
             }
         }

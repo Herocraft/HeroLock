@@ -1,6 +1,8 @@
 package com.herocraftonline.rightlegred.herolock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 
@@ -8,8 +10,7 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.herocraftonline.rightlegred.herolock.command.CommandManager;
-import com.herocraftonline.rightlegred.herolock.command.commands.*;
+import com.herocraftonline.rightlegred.herolock.commands.*;
 
 public class HeroLock extends JavaPlugin{
     // HeroLock Stuff
@@ -18,9 +19,9 @@ public class HeroLock extends JavaPlugin{
 
     // HeroLock Listeners
     private final HLPlayerListener playerListener = new HLPlayerListener(this);
+    private final HLBlockListener blockListener = new HLBlockListener(this);
 
-    //Command Manager
-    CommandManager commandManager;
+
 
     @Override
     public void onDisable() {
@@ -32,6 +33,11 @@ public class HeroLock extends JavaPlugin{
         registerEvents();
         setupDatabase();
         registerCommands();
+        if(getServer().getPluginManager().getPlugin("Permissions") != null){
+            // Does Have
+        }else{
+            // Doesn't Have
+        }
     }
 
     public HashMap<String, String> getLockCommands(){
@@ -45,6 +51,7 @@ public class HeroLock extends JavaPlugin{
     public void registerEvents(){
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Highest, this);
+        pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
     }
 
     private void setupDatabase() {
@@ -57,10 +64,16 @@ public class HeroLock extends JavaPlugin{
     }
 
     private void registerCommands() {
-        commandManager = new CommandManager();
         // Page 1
-        commandManager.addCommand(new CommandLock(this));
-        commandManager.addCommand(new CommandUnlock(this));
+        getCommand("lock").setExecutor(new CommandLock(this));
+        getCommand("unlock").setExecutor(new CommandUnlock(this));
 
+    }
+    
+    @Override
+    public List<Class<?>> getDatabaseClasses() {
+        List<Class<?>> list = new ArrayList<Class<?>>();
+        list.add(HeroChest.class);
+        return list;
     }
 }
