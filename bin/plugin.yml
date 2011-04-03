@@ -10,3 +10,6 @@ commands:
   unlock:
     description: Unlock a chest
     usage: /unlock <password>
+  change:
+    description: Change a chests password - if you're the chest owner
+    usage: /change <password>

@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 
 import com.herocraftonline.rightlegred.herolock.HeroLock;
 
-public class CommandLock implements CommandExecutor {
+public class CommandChangePassword implements CommandExecutor {
     private final HeroLock plugin;
 
-    public CommandLock(HeroLock plugin) {
+    public CommandChangePassword(HeroLock plugin) {
         this.plugin = plugin;
     }
 
@@ -34,14 +34,14 @@ public class CommandLock implements CommandExecutor {
             plugin.getUnlockCommands().remove(p.getName());
         }
 
-        if (plugin.getChangeCommands().containsKey((p.getName()))) {
-            String password = plugin.getChangeCommands().get(p.getName());
-            sender.sendMessage(ChatColor.RED + "Switching from Change Password Mode with password: " + ChatColor.BLUE + password);
-            plugin.getChangeCommands().remove(p.getName());
+        if (plugin.getLockCommands().containsKey((p.getName()))) {
+            String password = plugin.getLockCommands().get(p.getName());
+            sender.sendMessage(ChatColor.RED + "Switching from Lock Mode with password: " + ChatColor.BLUE + password);
+            plugin.getLockCommands().remove(p.getName());
         }
 
-        plugin.getLockCommands().put(((Player) sender).getName(), args[0]);
-        sender.sendMessage(ChatColor.RED + "Activated Lock Mode - With Password: " + ChatColor.BLUE + args[0]);
+        plugin.getChangeCommands().put(((Player) sender).getName(), args[0]);
+        sender.sendMessage(ChatColor.RED + "Activated Change Password Mode - With Password: " + ChatColor.BLUE + args[0]);
         return true;
     }
 }
