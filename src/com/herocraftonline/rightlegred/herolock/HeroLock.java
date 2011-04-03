@@ -12,6 +12,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.herocraftonline.rightlegred.herolock.commands.*;
 
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
+import org.bukkit.plugin.Plugin;
+
 public class HeroLock extends JavaPlugin{
     // HeroLock Stuff
     protected HashMap<String, String> lockCommand = new HashMap<String, String>();
@@ -21,6 +25,8 @@ public class HeroLock extends JavaPlugin{
     private final HLPlayerListener playerListener = new HLPlayerListener(this);
     private final HLBlockListener blockListener = new HLBlockListener(this);
 
+    // Permissions
+    public static PermissionHandler Permissions;
 
 
     @Override
@@ -75,5 +81,17 @@ public class HeroLock extends JavaPlugin{
         List<Class<?>> list = new ArrayList<Class<?>>();
         list.add(HeroChest.class);
         return list;
+    }
+    
+    private void setupPermissions() {
+        Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+
+        if (this.Permissions == null) {
+            if (test != null) {
+                this.Permissions = ((Permissions)test).getHandler();
+            } else {
+                System.out.println("Permission system not detected, defaulting to OP");
+            }
+        }
     }
 }

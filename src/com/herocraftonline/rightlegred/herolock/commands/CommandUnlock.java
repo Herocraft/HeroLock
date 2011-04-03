@@ -25,8 +25,12 @@ public class CommandUnlock implements CommandExecutor {
         } else if (args.length < 1) {
             return false;
         } 
+        
 
         Player p = (Player) sender;
+        if (!plugin.Permissions.has(p, "herolock.unlock")) {
+            return false;
+        }
         if(plugin.getLockCommands().containsKey((p.getName()))){
             String password = plugin.getLockCommands().get(p.getName());
             sender.sendMessage("Switching from Lock Mode with password: " + ChatColor.BLUE + password);
