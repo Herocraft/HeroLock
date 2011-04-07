@@ -14,9 +14,11 @@ import org.bukkit.event.player.PlayerListener;
 public class HLPlayerListener extends PlayerListener {
 
     private final HeroLock plugin;
+    private final Utils util;
 
     public HLPlayerListener(HeroLock plugin) {
         this.plugin = plugin;
+        this.util = new Utils(plugin);
     }
 
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -37,7 +39,7 @@ public class HLPlayerListener extends PlayerListener {
                     event.setUseInteractedBlock(Result.DENY);
                     HeroChest newLock = new HeroChest();
                     newLock.setLocation(block.getLocation().toString());
-                    newLock.setPassword(lockCommand.get(p.getName()));
+                    newLock.setPassword(util.md5String(lockCommand.get(p.getName())));
                     newLock.setPlayer(p);
                     newLock.setWorldName(p.getWorld().toString());
                     plugin.getDatabase().save(newLock);
@@ -52,7 +54,7 @@ public class HLPlayerListener extends PlayerListener {
                     return;
                 } else {
                     if (unlockCommand.containsKey(p.getName())) {
-                        if (unlockCommand.get(p.getName()).equalsIgnoreCase(chestCheck.getPassword())) {
+                        if (util.md5String(unlockCommand.get(p.getName())).equalsIgnoreCase(chestCheck.getPassword())) {
 
                         } else {
                             p.sendMessage(ChatColor.RED + "HeroLock: Wrong password!");
@@ -69,7 +71,7 @@ public class HLPlayerListener extends PlayerListener {
                 HeroChest chestCheck = plugin.getDatabase().find(HeroChest.class).where().ieq("location", block.getLocation().toString()).findUnique();
                 if (chestCheck != null) {
                     if (chestCheck.playerName.equalsIgnoreCase(p.getName())) {
-                        chestCheck.setPassword(changeCommand.get(p.getName()));
+                        chestCheck.setPassword(util.md5String(changeCommand.get(p.getName())));
                         plugin.getDatabase().save(chestCheck);
                         event.setCancelled(true);
                         event.setUseInteractedBlock(Result.DENY);

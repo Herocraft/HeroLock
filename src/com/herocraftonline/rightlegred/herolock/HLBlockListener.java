@@ -15,6 +15,8 @@ public class HLBlockListener extends BlockListener {
         if (chestCheck != null) {
             if (!event.getPlayer().getName().equalsIgnoreCase(chestCheck.getPlayerName())) {
                 event.setCancelled(true);
+            }else{
+                plugin.getDatabase().delete(chestCheck);
             }
         }
     }

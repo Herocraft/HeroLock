@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginManager;
@@ -32,7 +33,7 @@ public class HeroLock extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        getDatabase().endTransaction();
     }
 
     @Override
@@ -79,7 +80,6 @@ public class HeroLock extends JavaPlugin {
         getCommand("lock").setExecutor(new CommandLock(this));
         getCommand("unlock").setExecutor(new CommandUnlock(this));
         getCommand("change").setExecutor(new CommandChangePassword(this));
-
     }
 
     @Override
