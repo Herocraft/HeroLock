@@ -1,5 +1,6 @@
 package com.herocraftonline.rightlegred.herolock;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.herocraftonline.rightlegred.herolock.commands.*;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.config.Configuration;
 
 @SuppressWarnings("unused")
 public class HeroLock extends JavaPlugin {
@@ -29,7 +31,7 @@ public class HeroLock extends JavaPlugin {
     private final HLBlockListener blockListener = new HLBlockListener(this);
 
     // Permissions
-    public static PermissionHandler Permissions;
+    public PermissionHandler Permissions;
 
     @Override
     public void onDisable() {
@@ -54,6 +56,7 @@ public class HeroLock extends JavaPlugin {
 
     public HashMap<String, String> getUnlockCommands() {
         return unlockCommand;
+
     }
 
     public HashMap<String, String> getChangeCommands() {
@@ -77,9 +80,9 @@ public class HeroLock extends JavaPlugin {
 
     private void registerCommands() {
         // Page 1
-        getCommand("lock").setExecutor(new CommandLock(this));
-        getCommand("unlock").setExecutor(new CommandUnlock(this));
-        getCommand("change").setExecutor(new CommandChangePassword(this));
+        getCommand("lock").setExecutor(new CommandChestLock(this));
+        getCommand("unlock").setExecutor(new CommandChestUnlock(this));
+        getCommand("change").setExecutor(new CommandChestChangePassword(this));
     }
 
     @Override
@@ -89,7 +92,6 @@ public class HeroLock extends JavaPlugin {
         return list;
     }
 
-    @SuppressWarnings("static-access")
     private void setupPermissions() {
         Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
 

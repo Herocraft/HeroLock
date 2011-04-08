@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 
 import com.herocraftonline.rightlegred.herolock.HeroLock;
 
-public class CommandChangePassword implements CommandExecutor {
+public class CommandChestLock implements CommandExecutor {
     private final HeroLock plugin;
 
-    public CommandChangePassword(HeroLock plugin) {
+    public CommandChestLock(HeroLock plugin) {
         this.plugin = plugin;
     }
 
@@ -26,6 +26,10 @@ public class CommandChangePassword implements CommandExecutor {
             return false;
         }
 
+        if (!plugin.Permissions.has(player, "herolock.chest.lock")) {
+            return false;
+        }
+        
         Player p = (Player) sender;
 
         if (plugin.getUnlockCommands().containsKey((p.getName()))) {
@@ -34,14 +38,14 @@ public class CommandChangePassword implements CommandExecutor {
             plugin.getUnlockCommands().remove(p.getName());
         }
 
-        if (plugin.getLockCommands().containsKey((p.getName()))) {
-            String password = plugin.getLockCommands().get(p.getName());
-            sender.sendMessage(ChatColor.RED + "Switching from Lock Mode with password: " + ChatColor.BLUE + password);
-            plugin.getLockCommands().remove(p.getName());
+        if (plugin.getChangeCommands().containsKey((p.getName()))) {
+            String password = plugin.getChangeCommands().get(p.getName());
+            sender.sendMessage(ChatColor.RED + "Switching from Change Password Mode with password: " + ChatColor.BLUE + password);
+            plugin.getChangeCommands().remove(p.getName());
         }
 
-        plugin.getChangeCommands().put(((Player) sender).getName(), args[0]);
-        sender.sendMessage(ChatColor.RED + "Activated Change Password Mode - With Password: " + ChatColor.BLUE + args[0]);
+        plugin.getLockCommands().put(((Player) sender).getName(), args[0]);
+        sender.sendMessage(ChatColor.RED + "Activated Lock Mode - With Password: " + ChatColor.BLUE + args[0]);
         return true;
     }
 }

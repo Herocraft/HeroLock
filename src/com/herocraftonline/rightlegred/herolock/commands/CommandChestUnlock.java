@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 
 import com.herocraftonline.rightlegred.herolock.HeroLock;
 
-public class CommandUnlock implements CommandExecutor {
+public class CommandChestUnlock implements CommandExecutor {
     private final HeroLock plugin;
 
-    public CommandUnlock(HeroLock plugin) {
+    public CommandChestUnlock(HeroLock plugin) {
         this.plugin = plugin;
     }
 
@@ -26,6 +26,10 @@ public class CommandUnlock implements CommandExecutor {
             return false;
         }
 
+        if (!plugin.Permissions.has(player, "herolock.chest.unlock")) {
+            return false;
+        }
+        
         Player p = (Player) sender;
 
         if (plugin.getLockCommands().containsKey((p.getName()))) {

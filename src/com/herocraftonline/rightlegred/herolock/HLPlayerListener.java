@@ -23,7 +23,7 @@ public class HLPlayerListener extends PlayerListener {
 
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
+            
         }
         Block block = event.getClickedBlock();
         Player p = event.getPlayer();
@@ -90,3 +90,4 @@ public class HLPlayerListener extends PlayerListener {
         }
     }
 }
+

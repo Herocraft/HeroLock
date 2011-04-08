@@ -1,6 +1,6 @@
 name: HeroLock
 main: com.herocraftonline.rightlegred.herolock.HeroLock
-version: 0.0.2
+version: 0.0.3
 description: A system which allows users to password protect chests.
 database: true
 commands:
