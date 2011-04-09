@@ -25,11 +25,13 @@ public class CommandChestUnlock implements CommandExecutor {
         } else if (args.length < 1) {
             return false;
         }
+        if (plugin.hasPermissions) {
 
-        if (!plugin.Permissions.has(player, "herolock.chest.unlock")) {
-            return false;
+            if (!plugin.Permissions.has(player, "herolock.chest.unlock")) {
+                return false;
+            }
         }
-        
+
         Player p = (Player) sender;
 
         if (plugin.getLockCommands().containsKey((p.getName()))) {

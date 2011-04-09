@@ -32,6 +32,7 @@ public class HeroLock extends JavaPlugin {
 
     // Permissions
     public PermissionHandler Permissions;
+    public boolean hasPermissions;
 
     @Override
     public void onDisable() {
@@ -44,9 +45,9 @@ public class HeroLock extends JavaPlugin {
         setupDatabase();
         registerCommands();
         if (getServer().getPluginManager().getPlugin("Permissions") != null) {
-            // Does Have
+            hasPermissions = true;
         } else {
-            // Doesn't Have
+            hasPermissions = false;
         }
     }
 

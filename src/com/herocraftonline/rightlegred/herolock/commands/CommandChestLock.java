@@ -25,11 +25,13 @@ public class CommandChestLock implements CommandExecutor {
         } else if (args.length < 1) {
             return false;
         }
+        if (plugin.hasPermissions) {
 
-        if (!plugin.Permissions.has(player, "herolock.chest.lock")) {
-            return false;
+            if (!plugin.Permissions.has(player, "herolock.chest.lock")) {
+                return false;
+            }
         }
-        
+
         Player p = (Player) sender;
 
         if (plugin.getUnlockCommands().containsKey((p.getName()))) {
